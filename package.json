@@ -1,0 +1,13 @@
+{
+  "name": "clinic-appointment-system",
+  "version": "1.0.0",
+  "description": "Ayurvedic Clinic Appointment Booking System",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve .",
+    "build": "echo 'No build needed'"
+  },
+  "keywords": ["appointment", "clinic", "ayurveda", "booking"],
+  "author": "Dr. Santosh Gambhire",
+  "license": "MIT"
+}

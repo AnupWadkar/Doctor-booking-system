@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayurvedic Clinic - Book Appointment</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=Karla:wght@400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --earth-dark: #2d4a3e;
+            --earth-medium: #4a7c59;
+            --earth-light: #8fb996;
+            --sand: #f4f1e8;
+            --clay: #c8a882;
+            --terracotta: #d4896f;
+            --cream: #fdfbf7;
+            --shadow: rgba(45, 74, 62, 0.12);
+        }
+        
+        body {
+            font-family: 'Karla', sans-serif;
+            background: linear-gradient(135deg, var(--sand) 0%, var(--cream) 100%);
+            min-height: 100vh;
+            color: var(--earth-dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 120%;
+            background: radial-gradient(circle, rgba(138, 187, 150, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            animation: breathe 8s ease-in-out infinite;
+        }
+        
+        @keyframes breathe {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.1) rotate(5deg); opacity: 0.7; }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .header h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: var(--earth-dark);
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+        
+        .header .subtitle {
+            font-size: 1.15rem;
+            color: var(--earth-medium);
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+        
+        .view-toggle {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 1s ease-out 0.3s both;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .toggle-btn {
+            background: white;
+            border: 2px solid var(--earth-light);
+            color: var(--earth-medium);
+            padding: 14px 36px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Karla', sans-serif;
+            letter-spacing: 0.03em;
+            box-shadow: 0 4px 15px var(--shadow);
+        }
+        
+        .toggle-btn:hover {
+            background: var(--earth-dark);
+            color: white;
+            border-color: var(--earth-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px var(--shadow);
+        }
+        
+        .view {
+            display: none;
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .view.active {
+            display: block;
+        }
+        
+        .booking-card {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            max-width: 750px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px var(--shadow);
+            border: 1px solid rgba(138, 187, 150, 0.2);
+        }
+        
+        .form-group {
+            margin-bottom: 28px;
+            animation: fadeInUp 0.5s ease-out both;
+        }
+        
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.15s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+        .form-group:nth-child(4) { animation-delay: 0.25s; }
+        .form-group:nth-child(5) { animation-delay: 0.3s; }
+        .form-group:nth-child(6) { animation-delay: 0.35s; }
+        .form-group:nth-child(7) { animation-delay: 0.4s; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--earth-dark);
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--earth-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Karla', sans-serif;
+            transition: all 0.3s ease;
+            background: var(--cream);
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--earth-medium);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(74, 124, 89, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .slots-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+        
+        .slot-btn {
+            padding: 14px;
+            border: 2px solid var(--earth-light);
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--earth-medium);
+            transition: all 0.3s ease;
+            font-family: 'Karla', sans-serif;
+        }
+        
+        .slot-btn:hover:not(.booked) {
+            background: var(--earth-light);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .slot-btn.selected {
+            background: var(--earth-medium);
+            color: white;
+            border-color: var(--earth-medium);
+        }
+        
+        .slot-btn.booked {
+            background: #e0e0e0;
+            color: #999;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--earth-dark);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            font-family: 'Karla', sans-serif;
+            letter-spacing: 0.05em;
+            box-shadow: 0 8px 24px rgba(45, 74, 62, 0.3);
+        }
+        
+        .submit-btn:hover {
+            background: var(--earth-medium);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(45, 74, 62, 0.4);
+        }
+        
+        .message {
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            animation: slideDown 0.4s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+        
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 60px var(--shadow);
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--earth-light);
+        }
+        
+        .admin-header h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2.2rem;
+            color: var(--earth-dark);
+            font-weight: 400;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+        
+        .admin-btn {
+            padding: 12px 24px;
+            border: 2px solid var(--earth-light);
+            background: white;
+            color: var(--earth-medium);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Karla', sans-serif;
+        }
+        
+        .admin-btn:hover {
+            background: var(--earth-medium);
+            color: white;
+            border-color: var(--earth-medium);
+        }
+        
+        .admin-btn.danger {
+            border-color: var(--terracotta);
+            color: var(--terracotta);
+        }
+        
+        .admin-btn.danger:hover {
+            background: var(--terracotta);
+            color: white;
+        }
+        
+        .appointments-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+        }
+        
+        .appointments-table th {
+            text-align: left;
+            padding: 14px;
+            background: var(--earth-light);
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.03em;
+        }
+        
+        .appointments-table th:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .appointments-table th:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .appointments-table td {
+            padding: 16px 14px;
+            background: var(--cream);
+            border-bottom: 1px solid var(--earth-light);
+        }
+        
+        .appointments-table tr {
+            transition: all 0.3s ease;
+        }
+        
+        .appointments-table tbody tr:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+        
+        .appointments-table tbody tr td:first-child {
+            border-radius: 10px 0 0 10px;
+        }
+        
+        .appointments-table tbody tr td:last-child {
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-completed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .action-btns {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn.approve {
+            background: var(--earth-medium);
+            color: white;
+        }
+        
+        .action-btn.complete {
+            background: var(--clay);
+            color: white;
+        }
+        
+        .action-btn.cancel {
+            background: var(--terracotta);
+            color: white;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
+        }
+        
+        .login-form {
+            max-width: 450px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px var(--shadow);
+        }
+        
+        .login-form h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: var(--earth-dark);
+            text-align: center;
+        }
+        
+        .no-appointments {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--earth-medium);
+            font-size: 1.1rem;
+        }
+        
+        .clinic-info {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            border-left: 5px solid var(--earth-medium);
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+        
+        .clinic-info h3 {
+            font-family: 'Crimson Pro', serif;
+            color: var(--earth-dark);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .timing-block {
+            margin: 10px 0;
+            color: var(--earth-medium);
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .booking-card {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .slots-container {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .admin-panel {
+                padding: 20px;
+            }
+            
+            .appointments-table {
+                font-size: 0.85rem;
+            }
+            
+            .appointments-table th,
+            .appointments-table td {
+                padding: 10px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌿 श्री विश्वरूप आयुर्वेदिक चिकित्सालय व पंचकर्म केंद्र</h1>
+            <p class="subtitle">डॉ. संतोष ठोंबरे - MD (Ayu.)</p>
+            <div style="margin-top: 20px; font-size: 1rem; color: var(--earth-medium); font-weight: 500;">
+                <div style="margin: 8px 0;">📍 पत्ता - कपिला नगर, अकोला, महाराष्ट्र 444001, भारत</div>
+                <div style="margin: 8px 0;">📧 Email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ea998298839c8399829d8b989f9aaa8d878b8386c4898587">[email&#160;protected]</a></div>
+                <div style="margin: 8px 0;">📱 Mobile: 9511784298</div>
+            </div>
+        </div>
+        
+        <div class="view-toggle">
+            <button class="toggle-btn" onclick="toggleLanguage()" id="languageBtn">मराठी (Marathi)</button>
+            <button class="toggle-btn" onclick="toggleView()" id="adminToggleBtn">Admin Login</button>
+        </div>
+        
+        <!-- Patient Booking View -->
+        <div id="patientView" class="view active">
+            <div class="clinic-info">
+                <h3>Clinic Timings</h3>
+                <div class="timing-block">🌅 Morning: 9:00 AM – 1:00 PM</div>
+                <div class="timing-block">🌙 Evening: 5:00 PM – 9:00 PM</div>
+                <p style="margin-top: 15px; color: var(--earth-medium); font-size: 0.95rem;">
+                    Each consultation: 30 minutes · Please arrive 10 minutes early
+                </p>
+            </div>
+            
+            <div class="booking-card">
+                <div id="patientMessage" class="message"></div>
+                
+                <form id="bookingForm">
+                    <div class="form-group">
+                        <label>Patient Name *</label>
+                        <input type="text" id="patientName" required placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mobile Number *</label>
+                            <input type="tel" id="mobile" required placeholder="10-digit number" pattern="[0-9]{10}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Age *</label>
+                            <input type="number" id="age" required min="1" max="120" placeholder="Age">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Gender *</label>
+                        <select id="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Preferred Date *</label>
+                        <input type="date" id="appointmentDate" required onchange="loadSlots()">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Select Time Slot *</label>
+                        <div id="slotsContainer" class="slots-container">
+                            <p style="color: var(--earth-medium); padding: 20px; text-align: center;">Please select a date first</p>
+                        </div>
+                        <input type="hidden" id="selectedSlot" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Health Issue (Optional)</label>
+                        <textarea id="healthIssue" placeholder="Brief description of your health concern..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Book Appointment</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Admin View -->
+        <div id="adminView" class="view">
+            <div id="loginSection" class="login-form">
+                <h2>Admin Login</h2>
+                <div id="loginMessage" class="message"></div>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" id="adminUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="adminPassword" required>
+                    </div>
+                    <button type="submit" class="submit-btn">Login</button>
+                </form>
+            </div>
+            
+            <div id="adminPanel" class="admin-panel" style="display: none;">
+                <div class="admin-header">
+                    <h2>Appointment Management</h2>
+                    <button class="admin-btn" onclick="logout()">Logout</button>
+                </div>
+                
+                <div class="admin-actions">
+                    <button class="admin-btn" onclick="downloadCSV()" data-translate="downloadPatientList">📥 Download Patient List (CSV)</button>
+                    <button class="admin-btn" onclick="showBlockDates()" data-translate="blockDates">🚫 Block Dates / Holidays</button>
+                    <button class="admin-btn" onclick="filterAppointments('all')" data-translate="all">All</button>
+                    <button class="admin-btn" onclick="filterAppointments('pending')" data-translate="pending">Pending</button>
+                    <button class="admin-btn" onclick="filterAppointments('approved')" data-translate="approved">Approved</button>
+                    <button class="admin-btn" onclick="filterAppointments('completed')" data-translate="completed">Completed</button>
+                </div>
+                
+                <div class="form-group">
+                    <label data-translate="filterByDate">Filter by Date</label>
+                    <input type="date" id="adminDateFilter" onchange="loadAdminAppointments()">
+                </div>
+                
+                <div id="appointmentsContainer"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Language translations
+        let currentLanguage = 'en';
+        
+        const translations = {
+            en: {
+                clinicName: '🌿 Shri Vishwarup Ayurvedic Chikitsalaya & Panchakarma Center',
+                subtitle: 'Dr. Santosh Thombre - MD (Ayu.)',
+                languageBtn: 'मराठी (Marathi)',
+                adminToggleBtn: 'Admin Login',
+                patientBooking: 'Patient Booking',
+                clinicTimings: 'Clinic Timings',
+                morning: '🌅 Morning: 9:00 AM – 1:00 PM',
+                evening: '🌙 Evening: 5:00 PM – 9:00 PM',
+                consultationNote: 'Each consultation: 30 minutes · Please arrive 10 minutes early',
+                patientName: 'Patient Name',
+                mobileNumber: 'Mobile Number',
+                age: 'Age',
+                gender: 'Gender',
+                selectGender: 'Select Gender',
+                male: 'Male',
+                female: 'Female',
+                other: 'Other',
+                preferredDate: 'Preferred Date',
+                selectTimeSlot: 'Select Time Slot',
+                selectDateFirst: 'Please select a date first',
+                healthIssue: 'Health Issue (Optional)',
+                healthIssuePlaceholder: 'Brief description of your health concern...',
+                bookAppointment: 'Book Appointment',
+                appointmentSent: '✅ Your appointment request has been sent. Clinic will confirm shortly.',
+                selectSlotError: 'Please select a time slot',
+                clinicClosed: '⚠️ Clinic is closed on this date',
+                adminLogin: 'Admin Login',
+                username: 'Username',
+                password: 'Password',
+                login: 'Login',
+                logout: 'Logout',
+                invalidCredentials: '❌ Invalid credentials',
+                appointmentManagement: 'Appointment Management',
+                downloadPatientList: '📥 Download Patient List (CSV)',
+                blockDates: '🚫 Block Dates / Holidays',
+                all: 'All',
+                pending: 'Pending',
+                approved: 'Approved',
+                completed: 'Completed',
+                filterByDate: 'Filter by Date',
+                noAppointments: '📋 No appointments found',
+                date: 'Date',
+                time: 'Time',
+                patient: 'Patient',
+                mobile: 'Mobile',
+                ageGender: 'Age/Gender',
+                issue: 'Issue',
+                status: 'Status',
+                actions: 'Actions',
+                approve: 'Approve',
+                complete: 'Complete',
+                cancel: 'Cancel',
+                cancelled: 'Cancelled',
+                namePlaceholder: 'Enter your full name',
+                mobilePlaceholder: '10-digit number',
+                agePlaceholder: 'Age'
+            },
+            mr: {
+                clinicName: '🌿 श्री विश्वरूप आयुर्वेदिक चिकित्सालय व पंचकर्म केंद्र',
+                subtitle: 'डॉ. संतोष ठोंबरे - MD (Ayu.)',
+                languageBtn: 'English',
+                adminToggleBtn: 'प्रशासक लॉगिन',
+                patientBooking: 'रुग्ण नोंदणी',
+                clinicTimings: 'क्लिनिक वेळ',
+                morning: '🌅 सकाळ: ९:०० - १:०० दुपारी',
+                evening: '🌙 संध्याकाळ: ५:०० - ९:०० रात्री',
+                consultationNote: 'प्रत्येक परामर्श: ३० मिनिटे · कृपया १० मिनिटे आधी येऊन पोहोचा',
+                patientName: 'रुग्णाचे नाव',
+                mobileNumber: 'मोबाईल नंबर',
+                age: 'वय',
+                gender: 'लिंग',
+                selectGender: 'लिंग निवडा',
+                male: 'पुरुष',
+                female: 'स्त्री',
+                other: 'इतर',
+                preferredDate: 'पसंतीची तारीख',
+                selectTimeSlot: 'वेळ निवडा',
+                selectDateFirst: 'कृपया प्रथम तारीख निवडा',
+                healthIssue: 'आरोग्य समस्या (ऐच्छिक)',
+                healthIssuePlaceholder: 'तुमच्या आरोग्य समस्येचे संक्षिप्त वर्णन...',
+                bookAppointment: 'भेटीची वेळ बुक करा',
+                appointmentSent: '✅ तुमची भेटीची विनंती पाठवली आहे. क्लिनिक लवकरच खात्री करेल.',
+                selectSlotError: 'कृपया वेळ निवडा',
+                clinicClosed: '⚠️ या तारखेला क्लिनिक बंद आहे',
+                adminLogin: 'प्रशासक लॉगिन',
+                username: 'वापरकर्ता नाव',
+                password: 'पासवर्ड',
+                login: 'लॉगिन',
+                logout: 'लॉगआउट',
+                invalidCredentials: '❌ चुकीची माहिती',
+                appointmentManagement: 'भेटी व्यवस्थापन',
+                downloadPatientList: '📥 रुग्ण यादी डाउनलोड करा (CSV)',
+                blockDates: '🚫 तारखा ब्लॉक करा / सुट्ट्या',
+                all: 'सर्व',
+                pending: 'प्रलंबित',
+                approved: 'मंजूर',
+                completed: 'पूर्ण',
+                filterByDate: 'तारखेनुसार फिल्टर करा',
+                noAppointments: '📋 कोणत्याही भेटी सापडल्या नाहीत',
+                date: 'तारीख',
+                time: 'वेळ',
+                patient: 'रुग्ण',
+                mobile: 'मोबाईल',
+                ageGender: 'वय/लिंग',
+                issue: 'समस्या',
+                status: 'स्थिती',
+                actions: 'कृती',
+                approve: 'मंजूर',
+                complete: 'पूर्ण',
+                cancel: 'रद्द',
+                cancelled: 'रद्द',
+                namePlaceholder: 'तुमचे संपूर्ण नाव टाका',
+                mobilePlaceholder: '१० अंकी नंबर',
+                agePlaceholder: 'वय'
+            }
+        };
+        
+        // Toggle language function
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'en' ? 'mr' : 'en';
+            updateLanguage();
+        }
+        
+        // Update all text based on current language
+        function updateLanguage() {
+            const t = translations[currentLanguage];
+            
+            // Header
+            document.querySelector('.header h1').textContent = t.clinicName;
+            document.querySelector('.header .subtitle').textContent = t.subtitle;
+            
+            // Contact details remain the same in both languages
+            const contactDiv = document.querySelector('.header > div');
+            if (contactDiv && currentLanguage === 'en') {
+                contactDiv.innerHTML = `
+                    <div style="margin: 8px 0;">📍 Address - Kapila Nagar, Akola, Maharashtra 444001, India</div>
+                    <div style="margin: 8px 0;">📧 Email: shrivishwarup@gmail.com</div>
+                    <div style="margin: 8px 0;">📱 Mobile: 9511784298</div>
+                `;
+            } else if (contactDiv && currentLanguage === 'mr') {
+                contactDiv.innerHTML = `
+                    <div style="margin: 8px 0;">📍 पत्ता - कपिला नगर, अकोला, महाराष्ट्र 444001, भारत</div>
+                    <div style="margin: 8px 0;">📧 Email: shrivishwarup@gmail.com</div>
+                    <div style="margin: 8px 0;">📱 Mobile: 9511784298</div>
+                `;
+            }
+            
+            // Toggle buttons
+            document.getElementById('languageBtn').textContent = t.languageBtn;
+            document.getElementById('adminToggleBtn').textContent = document.getElementById('patientView').classList.contains('active') ? t.adminToggleBtn : t.patientBooking;
+            
+            // Clinic info
+            document.querySelector('.clinic-info h3').textContent = t.clinicTimings;
+            const timingBlocks = document.querySelectorAll('.timing-block');
+            if (timingBlocks.length >= 2) {
+                timingBlocks[0].textContent = t.morning;
+                timingBlocks[1].textContent = t.evening;
+            }
+            const consultNote = document.querySelector('.clinic-info p');
+            if (consultNote) {
+                consultNote.textContent = t.consultationNote;
+            }
+            
+            // Booking form labels
+            const labels = {
+                'patientName': t.patientName,
+                'mobile': t.mobileNumber,
+                'age': t.age,
+                'gender': t.gender,
+                'appointmentDate': t.preferredDate,
+                'selectedSlot': t.selectTimeSlot,
+                'healthIssue': t.healthIssue
+            };
+            
+            for (const [id, text] of Object.entries(labels)) {
+                const input = document.getElementById(id);
+                if (input) {
+                    const label = input.closest('.form-group')?.querySelector('label');
+                    if (label) {
+                        label.textContent = text + (label.textContent.includes('*') ? ' *' : '');
+                    }
+                }
+            }
+            
+            // Form placeholders
+            const namePlaceholder = document.getElementById('patientName');
+            if (namePlaceholder) namePlaceholder.placeholder = t.namePlaceholder;
+            
+            const mobilePlaceholder = document.getElementById('mobile');
+            if (mobilePlaceholder) mobilePlaceholder.placeholder = t.mobilePlaceholder;
+            
+            const agePlaceholder = document.getElementById('age');
+            if (agePlaceholder) agePlaceholder.placeholder = t.agePlaceholder;
+            
+            const healthPlaceholder = document.getElementById('healthIssue');
+            if (healthPlaceholder) healthPlaceholder.placeholder = t.healthIssuePlaceholder;
+            
+            // Gender select options
+            const genderSelect = document.getElementById('gender');
+            if (genderSelect) {
+                genderSelect.options[0].text = t.selectGender;
+                genderSelect.options[1].text = t.male;
+                genderSelect.options[2].text = t.female;
+                genderSelect.options[3].text = t.other;
+            }
+            
+            // Submit button
+            const submitBtn = document.querySelector('#bookingForm .submit-btn');
+            if (submitBtn) submitBtn.textContent = t.bookAppointment;
+            
+            // Admin login form
+            const loginH2 = document.querySelector('.login-form h2');
+            if (loginH2) loginH2.textContent = t.adminLogin;
+            
+            const usernameLabel = document.getElementById('adminUsername')?.closest('.form-group')?.querySelector('label');
+            if (usernameLabel) usernameLabel.textContent = t.username;
+            
+            const passwordLabel = document.getElementById('adminPassword')?.closest('.form-group')?.querySelector('label');
+            if (passwordLabel) passwordLabel.textContent = t.password;
+            
+            const loginBtn = document.querySelector('#loginForm .submit-btn');
+            if (loginBtn) loginBtn.textContent = t.login;
+            
+            // Admin panel
+            const adminH2 = document.querySelector('.admin-header h2');
+            if (adminH2) adminH2.textContent = t.appointmentManagement;
+            
+            const logoutBtn = document.querySelector('.admin-header .admin-btn');
+            if (logoutBtn && (logoutBtn.textContent.includes('Logout') || logoutBtn.textContent.includes('लॉगआउट'))) {
+                logoutBtn.textContent = t.logout;
+            }
+            
+            // Admin action buttons
+            document.querySelectorAll('[data-translate]').forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (t[key]) {
+                    // Keep emojis for buttons that have them
+                    const hasEmoji = element.textContent.match(/[\u{1F300}-\u{1F9FF}]/u);
+                    element.textContent = hasEmoji ? element.textContent.split(' ')[0] + ' ' + t[key] : t[key];
+                }
+            });
+            
+            // Reload slots if date is selected
+            const selectedDate = document.getElementById('appointmentDate')?.value;
+            if (selectedDate) {
+                loadSlots();
+            }
+            
+            // Reload admin appointments if panel is visible
+            if (document.getElementById('adminPanel')?.style.display !== 'none') {
+                loadAdminAppointments();
+            }
+        }
+        
+        // Initialize appointments storage
+        if (!localStorage.getItem('appointments')) {
+            localStorage.setItem('appointments', JSON.stringify([]));
+        }
+        if (!localStorage.getItem('blockedDates')) {
+            localStorage.setItem('blockedDates', JSON.stringify([]));
+        }
+        
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('appointmentDate').setAttribute('min', today);
+        document.getElementById('adminDateFilter').setAttribute('min', today);
+        
+        // Generate time slots
+        function generateSlots() {
+            const slots = [];
+            // Morning slots: 9:00 AM - 1:00 PM (30 min intervals)
+            for (let hour = 9; hour < 13; hour++) {
+                slots.push(`${hour}:00 - ${hour}:30`);
+                if (hour < 12 || (hour === 12 && 30 < 60)) {
+                    slots.push(`${hour}:30 - ${hour + 1}:00`);
+                }
+            }
+            // Evening slots: 5:00 PM - 9:00 PM (30 min intervals)
+            for (let hour = 17; hour < 21; hour++) {
+                const displayHour = hour > 12 ? hour - 12 : hour;
+                const nextHour = hour + 1 > 12 ? hour + 1 - 12 : hour + 1;
+                slots.push(`${displayHour}:00 - ${displayHour}:30`);
+                if (hour < 20) {
+                    slots.push(`${displayHour}:30 - ${nextHour}:00`);
+                }
+            }
+            return slots;
+        }
+        
+        // Load available slots for selected date
+        function loadSlots() {
+            const date = document.getElementById('appointmentDate').value;
+            if (!date) return;
+            
+            const t = translations[currentLanguage];
+            const blockedDates = JSON.parse(localStorage.getItem('blockedDates') || '[]');
+            const slotsContainer = document.getElementById('slotsContainer');
+            
+            // Check if date is blocked
+            if (blockedDates.includes(date)) {
+                slotsContainer.innerHTML = `<p style="color: var(--terracotta); padding: 20px; text-align: center;">${t.clinicClosed}</p>`;
+                return;
+            }
+            
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            const bookedSlots = appointments
+                .filter(apt => apt.date === date && apt.status !== 'cancelled')
+                .map(apt => apt.slot);
+            
+            const allSlots = generateSlots();
+            slotsContainer.innerHTML = '';
+            
+            allSlots.forEach(slot => {
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = 'slot-btn';
+                button.textContent = slot;
+                
+                if (bookedSlots.includes(slot)) {
+                    button.classList.add('booked');
+                    button.disabled = true;
+                } else {
+                    button.onclick = () => selectSlot(slot, button);
+                }
+                
+                slotsContainer.appendChild(button);
+            });
+        }
+        
+        // Select time slot
+        function selectSlot(slot, button) {
+            document.querySelectorAll('.slot-btn').forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+            document.getElementById('selectedSlot').value = slot;
+        }
+        
+        // Handle booking form submission
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const t = translations[currentLanguage];
+            
+            const appointment = {
+                id: Date.now(),
+                name: document.getElementById('patientName').value,
+                mobile: document.getElementById('mobile').value,
+                age: document.getElementById('age').value,
+                gender: document.getElementById('gender').value,
+                date: document.getElementById('appointmentDate').value,
+                slot: document.getElementById('selectedSlot').value,
+                healthIssue: document.getElementById('healthIssue').value,
+                status: 'pending',
+                bookedAt: new Date().toISOString()
+            };
+            
+            if (!appointment.slot) {
+                showMessage('patientMessage', t.selectSlotError, 'error');
+                return;
+            }
+            
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            appointments.push(appointment);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            
+            showMessage('patientMessage', t.appointmentSent, 'success');
+            
+            // Reset form
+            document.getElementById('bookingForm').reset();
+            document.getElementById('slotsContainer').innerHTML = `<p style="color: var(--earth-medium); padding: 20px; text-align: center;">${t.selectDateFirst}</p>`;
+        });
+        
+        // Show message
+        function showMessage(elementId, message, type) {
+            const msgElement = document.getElementById(elementId);
+            msgElement.textContent = message;
+            msgElement.className = `message ${type}`;
+            msgElement.style.display = 'block';
+            setTimeout(() => {
+                msgElement.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Toggle between patient and admin views
+        function toggleView() {
+            const t = translations[currentLanguage];
+            const patientView = document.getElementById('patientView');
+            const adminView = document.getElementById('adminView');
+            const toggleBtn = document.getElementById('adminToggleBtn');
+            
+            if (patientView.classList.contains('active')) {
+                patientView.classList.remove('active');
+                adminView.classList.add('active');
+                toggleBtn.textContent = t.patientBooking;
+            } else {
+                adminView.classList.remove('active');
+                patientView.classList.add('active');
+                toggleBtn.textContent = t.adminToggleBtn;
+            }
+        }
+        
+        // Admin login (simple demo - use real authentication in production)
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const t = translations[currentLanguage];
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            // Demo credentials: admin / admin123
+            if (username === 'admin' && password === 'admin123') {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadAdminAppointments();
+            } else {
+                showMessage('loginMessage', t.invalidCredentials, 'error');
+            }
+        });
+        
+        // Logout
+        function logout() {
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('loginForm').reset();
+        }
+        
+        // Load appointments for admin
+        function loadAdminAppointments(filter = 'all') {
+            const t = translations[currentLanguage];
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            const dateFilter = document.getElementById('adminDateFilter').value;
+            
+            let filtered = appointments;
+            
+            if (dateFilter) {
+                filtered = filtered.filter(apt => apt.date === dateFilter);
+            }
+            
+            if (filter !== 'all') {
+                filtered = filtered.filter(apt => apt.status === filter);
+            }
+            
+            // Sort by date and time
+            filtered.sort((a, b) => {
+                if (a.date !== b.date) return new Date(a.date) - new Date(b.date);
+                return a.slot.localeCompare(b.slot);
+            });
+            
+            const container = document.getElementById('appointmentsContainer');
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="no-appointments">${t.noAppointments}</div>`;
+                return;
+            }
+            
+            let html = `
+                <table class="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>${t.date}</th>
+                            <th>${t.time}</th>
+                            <th>${t.patient}</th>
+                            <th>${t.mobile}</th>
+                            <th>${t.ageGender}</th>
+                            <th>${t.issue}</th>
+                            <th>${t.status}</th>
+                            <th>${t.actions}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            filtered.forEach(apt => {
+                const statusText = apt.status === 'pending' ? t.pending : 
+                                  apt.status === 'approved' ? t.approved : 
+                                  apt.status === 'completed' ? t.completed : t.cancelled;
+                
+                html += `
+                    <tr>
+                        <td>${formatDate(apt.date)}</td>
+                        <td>${apt.slot}</td>
+                        <td>${apt.name}</td>
+                        <td>${apt.mobile}</td>
+                        <td>${apt.age}/${apt.gender}</td>
+                        <td>${apt.healthIssue || '-'}</td>
+                        <td><span class="status-badge status-${apt.status}">${statusText.toUpperCase()}</span></td>
+                        <td class="action-btns">
+                            ${apt.status === 'pending' ? `<button class="action-btn approve" onclick="updateStatus(${apt.id}, 'approved')">${t.approve}</button>` : ''}
+                            ${apt.status === 'approved' ? `<button class="action-btn complete" onclick="updateStatus(${apt.id}, 'completed')">${t.complete}</button>` : ''}
+                            ${apt.status !== 'cancelled' && apt.status !== 'completed' ? `<button class="action-btn cancel" onclick="updateStatus(${apt.id}, 'cancelled')">${t.cancel}</button>` : ''}
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            container.innerHTML = html;
+        }
+        
+        // Update appointment status
+        function updateStatus(id, newStatus) {
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            const index = appointments.findIndex(apt => apt.id === id);
+            
+            if (index !== -1) {
+                appointments[index].status = newStatus;
+                localStorage.setItem('appointments', JSON.stringify(appointments));
+                loadAdminAppointments();
+            }
+        }
+        
+        // Filter appointments
+        function filterAppointments(status) {
+            loadAdminAppointments(status);
+        }
+        
+        // Download CSV
+        function downloadCSV() {
+            const appointments = JSON.parse(localStorage.getItem('appointments') || '[]');
+            
+            if (appointments.length === 0) {
+                alert('No appointments to download');
+                return;
+            }
+            
+            let csv = 'Date,Time Slot,Patient Name,Mobile,Age,Gender,Health Issue,Status,Booked At\n';
+            
+            appointments.forEach(apt => {
+                csv += `${apt.date},"${apt.slot}","${apt.name}",${apt.mobile},${apt.age},${apt.gender},"${apt.healthIssue || '-'}",${apt.status},${new Date(apt.bookedAt).toLocaleString()}\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `appointments_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
+        
+        // Block dates
+        function showBlockDates() {
+            const date = prompt('Enter date to block (YYYY-MM-DD):');
+            if (!date) return;
+            
+            const blockedDates = JSON.parse(localStorage.getItem('blockedDates') || '[]');
+            
+            if (blockedDates.includes(date)) {
+                alert('Date is already blocked');
+                return;
+            }
+            
+            blockedDates.push(date);
+            localStorage.setItem('blockedDates', JSON.stringify(blockedDates));
+            alert(`Date ${date} has been blocked`);
+        }
+        
+        // Format date
+        f
